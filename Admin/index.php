@@ -6,4 +6,7 @@ if (!isset($_SESSION['user'])) {
     // Redirect to the specific file
     header('Location:admin_login.php');
     exit;
+} else {
+    header('Location:CoolAdmin-master');
+    exit;
 }

@@ -61,7 +61,7 @@
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list"></ul>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="viewcust.php">
                                 <i class="far fa-check-square"></i>Customer</a>
                         </li>
@@ -73,7 +73,7 @@
                             <a href="viewroom.php">
                                 <i class="fas fa-calendar-alt"></i>View Rooms</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="viewbooking.php">
                                 <i class="fas fa-calendar-alt"></i>View Bookings</a>
                         </li>
