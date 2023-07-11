@@ -1,47 +1,46 @@
 <?php
 session_start();
+include 'database.php';
 ?>
 <?php
 $error = NULL;
 $notice = NULL;
 
-if(isset ($_POST['submit'])){
-	
-    $mysqli = new MySQLi('localhost','fypmhpbs','iDRIS@976','sdmarrio_mhpbs');	
-	
-	//Get form data
-	$name = $_POST['name'];
-	$room_number = $_POST['room_number'];
-	$price = $_POST['price'];
+if (isset($_POST['submit'])) {
 
-	
-	$checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
-	
-	if(mysqli_num_rows($checkroom_number) > 0){
-		$error = "This Room Number Has Already Been Registered!";
-	}else{
-		//Form Is Valid 
-		
-		//Connect To Database
-		$mysqli = new MySQLi('localhost','root','','MHPBS');
-		
-		//Sanitize 	form data
-		$name = $mysqli->real_escape_string($name);
-		$room_number = $mysqli->real_escape_string($room_number);
-		$price = $mysqli->real_escape_string($price);
+    $mysqli = $connection;
 
-		$insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
-		
-		if($insert){
-			
-			header("Location: viewroom.php");
-		    exit;				
-		
-		}else{
-			echo $mysqli->error;
-		}
-		
-	} 
+    //Get form data
+    $name = $_POST['name'];
+    $room_number = $_POST['room_number'];
+    $price = $_POST['price'];
+
+
+    $checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
+
+    if (mysqli_num_rows($checkroom_number) > 0) {
+        $error = "This Room Number Has Already Been Registered!";
+    } else {
+        //Form Is Valid 
+
+        //Connect To Database
+        $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
+
+        //Sanitize 	form data
+        $name = $mysqli->real_escape_string($name);
+        $room_number = $mysqli->real_escape_string($room_number);
+        $price = $mysqli->real_escape_string($price);
+
+        $insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
+
+        if ($insert) {
+
+            header("Location: viewroom.php");
+            exit;
+        } else {
+            echo $mysqli->error;
+        }
+    }
 }
 
 ?>
@@ -112,10 +111,10 @@ if(isset ($_POST['submit'])){
                             <a href="viewroom.php">
                                 <i class="fas fa-calendar-alt"></i>View Rooms</a>
                         </li>
-			                        <li>
+                        <li>
                             <a href="viewbooking.php">
                                 <i class="fas fa-calendar-alt"></i>View Bookings</a>
-                        </li>						
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -130,7 +129,7 @@ if(isset ($_POST['submit'])){
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                                 </button>
                             </form>
                             <div class="header-button">
@@ -141,12 +140,12 @@ if(isset ($_POST['submit'])){
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
-                                                
-                                                    <h5 class="name">
-                                                        <a href="#"><?php echo $_SESSION['firstname'] ?></a>
-                                                    </h5>
-                                                    <span class="email"><?php echo $_SESSION['email'] ?></span>
-                                                
+
+                                                <h5 class="name">
+                                                    <a href="#"><?php echo $_SESSION['firstname'] ?></a>
+                                                </h5>
+                                                <span class="email"><?php echo $_SESSION['email'] ?></span>
+
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
@@ -174,58 +173,58 @@ if(isset ($_POST['submit'])){
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-								<div class="container">
-    								<div class="login-wrap">
-       	 								<div class="login-content">
-            								<div class="login-logo">
-                								<a href="#">
-                    								<img src="images/icon/admindashboard1.png" alt="CoolAdmin">
-               	 								</a>
-            								</div>
-            									<div class="login-form">
-                									<form action="" method="POST">
-                        								<div class="form-group">
-                            								<label>Room Name</label>
-                    <select name="name" class="form-control" required>
-                      <option value="">Room Type</option>
-                      <?php
-                      $con = mysqli_connect("localhost", "root", "", "MHPBS");
-                      $sql = "SELECT * FROM roomtype";
-                      $result = mysqli_query($con, $sql);
-                      while ($row = mysqli_fetch_array($result)) {
-                        echo "<option value='{$row['name']}'>" . $row['name'] . "</option>";
-                      }
-                      ?>
-                    </select>
-                  </div>           
-                        								</div>
-                        									<div class="form-group">
-                            									<label>Room Number</label>
-                            									<input class="au-input au-input--full" type="text" name="room_number" placeholder="Room Number">
-                        									</div>
-                        										<div class="form-group">
-                            										<label>Price</label>
-                            										<input class="au-input au-input--full" type="text" name="price" placeholder="Price">
-                        										</div>
-															<input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Submit">
-                   	 								</form>
-												</div>
-										</div>	
-									</div>
-								</div>
-           					</div>
-						</div>
+                                <div class="container">
+                                    <div class="login-wrap">
+                                        <div class="login-content">
+                                            <div class="login-logo">
+                                                <a href="#">
+                                                    <img src="images/icon/admindashboard1.png" alt="CoolAdmin">
+                                                </a>
+                                            </div>
+                                            <div class="login-form">
+                                                <form action="" method="POST">
+                                                    <div class="form-group">
+                                                        <label>Room Name</label>
+                                                        <select name="name" class="form-control" required>
+                                                            <option value="">Room Type</option>
+                                                            <?php
+                                                            $con = mysqli_connect("localhost", "root", "", "MHPBS");
+                                                            $sql = "SELECT * FROM roomtype";
+                                                            $result = mysqli_query($con, $sql);
+                                                            while ($row = mysqli_fetch_array($result)) {
+                                                                echo "<option value='{$row['name']}'>" . $row['name'] . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Room Number</label>
+                                                <input class="au-input au-input--full" type="text" name="room_number" placeholder="Room Number">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Price</label>
+                                                <input class="au-input au-input--full" type="text" name="price" placeholder="Price">
+                                            </div>
+                                            <input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type="submit" name="submit" value="Submit">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <footer class="footer">
-    <div class="" style="text-align: center">
-        &copy; Copyright <strong><span>Marriott</span></strong>
-    </div>
-</footer>
             </div>
-            <!-- END MAIN CONTENT-->
-            <!-- END PAGE CONTAINER-->
+            <footer class="footer">
+                <div class="" style="text-align: center">
+                    &copy; Copyright <strong><span>Marriott</span></strong>
+                </div>
+            </footer>
         </div>
+        <!-- END MAIN CONTENT-->
+        <!-- END PAGE CONTAINER-->
+    </div>
     </div>
 
     <!-- Jquery JS-->
@@ -270,47 +269,45 @@ if(isset ($_POST['submit'])){
 $error = NULL;
 $notice = NULL;
 
-if(isset ($_POST['submit'])){
-	
-    $mysqli = new MySQLi('localhost','root','','MHPBS');	
-	
-	//Get form data
-	$name = $_POST['name'];
-	$room_number = $_POST['room_number'];
-	$price = $_POST['price'];
+if (isset($_POST['submit'])) {
 
-	
-	$checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
-	
-	if(mysqli_num_rows($checkroom_number) > 0){
-		$error = "This Room Number Has Already Been Registered!";
-	}else{
-		//Form Is Valid 
-		
-		//Connect To Database
-		$mysqli = new MySQLi('localhost','root','','MHPBS');
-		
-		//Sanitize 	form data
-		$name = $mysqli->real_escape_string($name);
-		$room_number = $mysqli->real_escape_string($room_number);
-		$price = $mysqli->real_escape_string($price);
+    $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
 
-		$insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
-		
-		if($insert){
-			
-			header("Location: index.php");
-		    exit;				
-		
-		}else{
-			echo $mysqli->error;
-		}
-		
-	} 
+    //Get form data
+    $name = $_POST['name'];
+    $room_number = $_POST['room_number'];
+    $price = $_POST['price'];
+
+
+    $checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
+
+    if (mysqli_num_rows($checkroom_number) > 0) {
+        $error = "This Room Number Has Already Been Registered!";
+    } else {
+        //Form Is Valid 
+
+        //Connect To Database
+        $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
+
+        //Sanitize 	form data
+        $name = $mysqli->real_escape_string($name);
+        $room_number = $mysqli->real_escape_string($room_number);
+        $price = $mysqli->real_escape_string($price);
+
+        $insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
+
+        if ($insert) {
+
+            header("Location: index.php");
+            exit;
+        } else {
+            echo $mysqli->error;
+        }
+    }
 }
 
 ?>
-							
+
 <?php
- echo $error;
+echo $error;
 ?>
