@@ -14,7 +14,7 @@ require 'database.php';
 
 if(isset ($_POST['submit'])){
 	
-    $mysqli = new MySQLi('localhost', 'fypmhpbs', 'iDRIS@976', 'sdmarrio_mhpbs');	
+    $mysqli = new MySQLi('localhost','root','','MHPBS');
 	
 	//Get form data
 	$firstname = $_POST['firstname'];
@@ -76,7 +76,9 @@ if(isset ($_POST['submit'])){
 		$password = md5 ($password);
 		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,ic,phone,address,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$ic','$phone','$address','$vkey')");
 		
-		if($insert){
+    header("Location: login.php");
+		exit;
+		/*if($insert){
 			
 			//Send Email
 	$message = "<p>Please click the link below to verify your account</p>";
@@ -91,11 +93,11 @@ if(isset ($_POST['submit'])){
 		}else{
 			echo $mysqli->error;
 		}
-		
+		*/
 	} 
 }
 
-function send_mail($to, $subject, $message)
+/*function send_mail($to, $subject, $message)
 {
 	$mail = new PHPMailer(true);
 
@@ -127,7 +129,7 @@ function send_mail($to, $subject, $message)
 	} catch (Exception $e) {
 	    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 	}
-}
+} */
 
 ?>
 

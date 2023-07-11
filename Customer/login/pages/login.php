@@ -9,7 +9,7 @@ if(isset($_POST['submit'])){
 	$password = $_POST ['password'];	
  
 	
-	$mysqli = new MySQLi('localhost','fypmhpbs','iDRIS@976','sdmarrio_mhpbs');
+	$mysqli = new MySQLi('localhost','root','','MHPBS');
 	
 	//Get form data
 	$username = $mysqli->real_escape_string($_POST['username']);
@@ -22,7 +22,7 @@ if(isset($_POST['submit'])){
 	if($resultSet->num_rows !=0){
 		//Process Login
 		$row = $resultSet->fetch_assoc();
-        $id = $row['id'];
+    $id = $row['id'];
 		$verified = $row['verified'];
 		$email = $row['email'];
 		$firstname = $row['firstname'];
@@ -34,14 +34,14 @@ if(isset($_POST['submit'])){
 		$date = date('M d Y',$date);
 		
 		
-		if($verified == 1){
+		if($verified == 0){
 			//Continue Processing
-			echo "Your account was verified and you have been logged in";
+			//echo "Your account was verified and you have been logged in";
 			
 			
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['username'] = $username;
-            $_SESSION['id'] = $id;
+      $_SESSION['id'] = $id;
 			$_SESSION['firstname'] = $firstname;
 			$_SESSION['email'] = $email;
 			$_SESSION['lastname'] = $lastname;
