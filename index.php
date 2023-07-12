@@ -13,6 +13,9 @@
                                 // Redirect to the specific file
                                 header('Location:Customer/home.php');
                                 exit;
+                        } else {
+                                header('Location:Customer/home.php');
+                                exit;
                         }
 
                         ?>

@@ -5,11 +5,13 @@
     <title>Rooms</title>
     <?php
     session_start();
+    require "database.php";
+
     if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
         header("index.php");
     }
 
-    require "database.php";
+
 
     //$id = $_SESSION['id'];
     $username = $_SESSION['username'];
@@ -122,26 +124,12 @@
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
                                             <?php
-                                            // $id = $_SESSION['id'];
-                                            $connection = mysqli_connect("localhost", "root", "654321", "mhpbs");
-                                            if (!$connection) {
-                                                die("Database connection failed: " . mysqli_connect_error());
-                                            }
-                                            $query = "SELECT * FROM admin_users WHERE id = ?";
-                                            $stmt = mysqli_prepare($connection, $query);
-                                            mysqli_stmt_bind_param($stmt, "i", $id);
-                                            mysqli_stmt_execute($stmt);
-                                            $resultpic = mysqli_stmt_get_result($stmt);
-                                            if (!$resultpic) {
-                                                die("Query execution failed: " . mysqli_error($connection));
-                                            }
-                                            $row = mysqli_fetch_assoc($resultpic);
+                                            // $id = $_SESSION['id']
                                             if ($row['image_admin'] == '') {
                                                 echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
                                             } else {
-                                                echo "<img src='uploads/" . $row['image_admin'] . "' alt='admin' />";
+                                                echo "<img src='uploads/" .  $image . "' alt='admin' />";
                                             }
-                                            mysqli_stmt_close($stmt);
                                             //mysqli_close($connection);
                                             ?>
                                         </div>
@@ -153,27 +141,11 @@
                                                 <div class="image">
 
                                                     <?php
-                                                    // $id = $_SESSION['id'];
-                                                    $connection = mysqli_connect("localhost", "root", "654321", "mhpbs");
-                                                    if (!$connection) {
-                                                        die("Database connection failed: " . mysqli_connect_error());
-                                                    }
-                                                    $query = "SELECT * FROM admin_users WHERE id = ?";
-                                                    $stmt = mysqli_prepare($connection, $query);
-                                                    mysqli_stmt_bind_param($stmt, "i", $id);
-                                                    mysqli_stmt_execute($stmt);
-                                                    $resultpic = mysqli_stmt_get_result($stmt);
-                                                    if (!$resultpic) {
-                                                        die("Query execution failed: " . mysqli_error($connection));
-                                                    }
-                                                    $row = mysqli_fetch_assoc($resultpic);
                                                     if ($row['image_admin'] == '') {
                                                         echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
                                                     } else {
-                                                        echo "<img src='uploads/" . $row['image_admin'] . "' alt='admin' />";
+                                                        echo "<img src='uploads/" .  $image . "' alt='admin' />";
                                                     }
-                                                    mysqli_stmt_close($stmt);
-                                                    //mysqli_close($connection);
                                                     ?>
                                                     <!-- <img src="images/icon/avatar-01.jpg" alt="John Doe" />-->
 
@@ -299,7 +271,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -373,7 +345,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -447,7 +419,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
