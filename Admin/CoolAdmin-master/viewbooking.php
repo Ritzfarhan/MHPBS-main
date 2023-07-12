@@ -4,8 +4,8 @@
 <head>
     <title>Rooms</title>
     <?php
-    include 'database.php';
     session_start();
+    include 'database.php';
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -172,7 +172,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -249,7 +249,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -322,7 +322,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -394,7 +394,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                        $conn = $connection;
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);

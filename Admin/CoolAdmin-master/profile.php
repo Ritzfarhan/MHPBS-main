@@ -60,7 +60,7 @@ $image = $row['image_admin']
                 <!-- Php image -->
                 <?php
                 // $id = $_SESSION['id'];
-                $connection = mysqli_connect("localhost", "root", "", "mhpbs");
+                // $connection = mysqli_connect("localhost", "root", "", "mhpbs");
                 if (!$connection) {
                   die("Database connection failed: " . mysqli_connect_error());
                 }
