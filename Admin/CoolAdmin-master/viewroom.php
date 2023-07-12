@@ -123,7 +123,7 @@
                                         <div class="image">
                                             <?php
                                             // $id = $_SESSION['id'];
-                                            $connection = mysqli_connect("localhost", "root", "", "mhpbs");
+                                            $connection = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                             if (!$connection) {
                                                 die("Database connection failed: " . mysqli_connect_error());
                                             }
@@ -154,7 +154,7 @@
 
                                                     <?php
                                                     // $id = $_SESSION['id'];
-                                                    $connection = mysqli_connect("localhost", "root", "", "mhpbs");
+                                                    $connection = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                                     if (!$connection) {
                                                         die("Database connection failed: " . mysqli_connect_error());
                                                     }

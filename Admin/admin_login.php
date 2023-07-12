@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
-	$mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
+	$mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
 	//Get form data
 	$username = $mysqli->real_escape_string($_POST['username']);
