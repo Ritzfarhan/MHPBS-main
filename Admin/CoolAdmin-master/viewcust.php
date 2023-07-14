@@ -69,10 +69,10 @@ include 'database.php';
                             <a href="viewroom.php">
                                 <i class="fas fa-calendar-alt"></i>View Rooms</a>
                         </li>
-			                        <li>
+                        <li>
                             <a href="viewbooking.php">
                                 <i class="fas fa-calendar-alt"></i>View Bookings</a>
-                        </li>						
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -87,23 +87,46 @@ include 'database.php';
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                                 </button>
                             </form>
                             <div class="header-button">
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <?php
+                                            // $id = $_SESSION['id']
+                                            if ($row['image_admin'] == '') {
+                                                echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                            } else {
+                                                echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                            }
+                                            //mysqli_close($connection);
+                                            ?>
+                                        </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><?php echo $_SESSION['username'] ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
-                                                
+                                                <div class="image">
+
+                                                    <?php
+                                                    if ($row['image_admin'] == '') {
+                                                        echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                                    } else {
+                                                        echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                                    }
+                                                    ?>
+                                                    <!-- <img src="images/icon/avatar-01.jpg" alt="John Doe" />-->
+
+                                                </div>
+                                                <div class="content">
                                                     <h5 class="name">
                                                         <a href="#"><?php echo $_SESSION['firstname'] ?></a>
                                                     </h5>
                                                     <span class="email"><?php echo $_SESSION['email'] ?></span>
-                                                
+                                                </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
@@ -132,64 +155,62 @@ include 'database.php';
                         <div class="row">
                             <div class="col-lg-6">
                                 <link rel="stylesheet" href="table.css">
-                                    <table class="content-table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">ID</th>
-                                                <th scope="col"> First Name</th>
-                                                <th scope="col">Last Name</th>
-                                                <th scope="col">Email</th>
-												<th scope="col">IC Number</th>
-                                                <th scope="col">Contact Number</th>
-												<th scope="col">Address</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                <table class="content-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col"> First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">IC Number</th>
+                                            <th scope="col">Contact Number</th>
+                                            <th scope="col">Address</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                                $sql = "SELECT * FROM users";
-                                                $result =  mysqli_query($connection,$sql);
-                                                if($result)
-                                                {
-                                                    while($row=mysqli_fetch_assoc($result))
-                                                    {
-                                                        $id = $row['id'];
-                                                        $firstname = $row['firstname'];
-                                                        $lastname = $row['lastname'];
-                                                        $email = $row['email'];
-														$ic = $row['ic'];
-                                                        $phone = $row['phone'];
-														$address = $row['address'];
-                                                        echo
-                                                        '<tr>
-                                                            <th scope="row">'.$id.'</th>
-                                                            <td>'.$firstname.'</td>
-                                                            <td>'.$lastname.'</td>
-                                                            <td>'.$email.'</td>
-															<td>'.$ic.'</td> 
-                                                            <td>'.$phone.'</td>
-															<td>'.$address.'</td>  
+                                        $sql = "SELECT * FROM users";
+                                        $result =  mysqli_query($connection, $sql);
+                                        if ($result) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $id = $row['id'];
+                                                $firstname = $row['firstname'];
+                                                $lastname = $row['lastname'];
+                                                $email = $row['email'];
+                                                $ic = $row['ic'];
+                                                $phone = $row['phone'];
+                                                $address = $row['address'];
+                                                echo
+                                                '<tr>
+                                                            <th scope="row">' . $id . '</th>
+                                                            <td>' . $firstname . '</td>
+                                                            <td>' . $lastname . '</td>
+                                                            <td>' . $email . '</td>
+															<td>' . $ic . '</td> 
+                                                            <td>' . $phone . '</td>
+															<td>' . $address . '</td>  
                                                             <td>
-                                                                <button class="btn btn-success"><a href="updatecust.php?updateid='.$id.'" class="text-light">Update</a></button> 
+                                                                <button class="btn btn-success"><a href="updatecust.php?updateid=' . $id . '" class="text-light">Update</a></button> 
 								                                 <br><br>
-                                                                <button class="btn btn-danger"><a href="deletecust.php?deleteid='.$id.'" class="text-light">Delete</a> </button>
+                                                                <button class="btn btn-danger"><a href="deletecust.php?deleteid=' . $id . '" class="text-light">Delete</a> </button>
                                                             </td>
-                                                        </tr>';	
-                                                    }
-                                                }
-                                            ?>
-                                        </tbody>
-                                    </table>
+                                                        </tr>';
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
                                 </link>
                             </div>
-                        </div>        
+                        </div>
                     </div>
                 </div>
                 <footer class="footer">
-    <div class="" style="text-align: center">
-        &copy; Copyright <strong><span>Marriott</span></strong>
-    </div>
-</footer>
+                    <div class="" style="text-align: center">
+                        &copy; Copyright <strong><span>Marriott</span></strong>
+                    </div>
+                </footer>
             </div>
         </div>
 

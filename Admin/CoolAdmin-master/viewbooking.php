@@ -100,7 +100,15 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <?php
+                                            // $id = $_SESSION['id']
+                                            if ($row['image_admin'] == '') {
+                                                echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                            } else {
+                                                echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                            }
+                                            //mysqli_close($connection);
+                                            ?>
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><?php echo $_SESSION['username'] ?></a>
@@ -108,9 +116,16 @@
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                    </a>
+
+                                                    <?php
+                                                    if ($row['image_admin'] == '') {
+                                                        echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                                    } else {
+                                                        echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                                    }
+                                                    ?>
+                                                    <!-- <img src="images/icon/avatar-01.jpg" alt="John Doe" />-->
+
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
@@ -172,7 +187,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -249,7 +264,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -322,7 +337,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -394,7 +409,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);

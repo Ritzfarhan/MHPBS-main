@@ -1,8 +1,8 @@
 <?php
 $dbServername = "localhost";
-$dbUsername = "fypmhpbs";
-$dbPassword = "iDRIS@976";
-$dbName = "sdmarrio_mhpbs";
+$dbUsername = "root";
+$dbPassword = "654321";
+$dbName = "mhpbs";
 
 // Create connection
 $connection = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
@@ -11,5 +11,3 @@ $connection = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
 if ($connection->connect_error) {
   die("Connection failed: " . $connection->connect_error);
 }
-
-?>

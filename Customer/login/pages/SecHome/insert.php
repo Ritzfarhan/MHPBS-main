@@ -15,7 +15,7 @@
 
 
 // Create connection
-$dbconnect=mysqli_connect('localhost','fypmhpbs','iDRIS@976','sdmarrio_mhpbs');
+$dbconnect=mysqli_connect("localhost", "root", "654321", "mhpbs");
 
 $bookingID = random_num(10);
 
@@ -34,5 +34,3 @@ if($qry){
 else{
 	echo"Failed to insert";
 }
-	
-?>

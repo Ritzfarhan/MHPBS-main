@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
         //Form Is Valid 
 
         //Connect To Database
-        $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
+        $mysqli = new MySQLi("localhost", "root", "654321", "mhpbs");
 
         //Sanitize 	form data
         $name = $mysqli->real_escape_string($name);
@@ -135,17 +135,40 @@ if (isset($_POST['submit'])) {
                             <div class="header-button">
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <?php
+                                            // $id = $_SESSION['id']
+                                            if ($row['image_admin'] == '') {
+                                                echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                            } else {
+                                                echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                            }
+                                            //mysqli_close($connection);
+                                            ?>
+                                        </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><?php echo $_SESSION['username'] ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
+                                                <div class="image">
 
-                                                <h5 class="name">
-                                                    <a href="#"><?php echo $_SESSION['firstname'] ?></a>
-                                                </h5>
-                                                <span class="email"><?php echo $_SESSION['email'] ?></span>
+                                                    <?php
+                                                    if ($row['image_admin'] == '') {
+                                                        echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                                    } else {
+                                                        echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                                    }
+                                                    ?>
+                                                    <!-- <img src="images/icon/avatar-01.jpg" alt="John Doe" />-->
 
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#"><?php echo $_SESSION['firstname'] ?></a>
+                                                    </h5>
+                                                    <span class="email"><?php echo $_SESSION['email'] ?></span>
+                                                </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
@@ -188,7 +211,7 @@ if (isset($_POST['submit'])) {
                                                         <select name="name" class="form-control" required>
                                                             <option value="">Room Type</option>
                                                             <?php
-                                                            $con = mysqli_connect("localhost", "root", "", "MHPBS");
+                                                            $con = mysqli_connect("localhost", "root", "654321", "mhps");
                                                             $sql = "SELECT * FROM roomtype";
                                                             $result = mysqli_query($con, $sql);
                                                             while ($row = mysqli_fetch_array($result)) {
@@ -252,62 +275,3 @@ if (isset($_POST['submit'])) {
     <script src="js/main.js"></script>
 
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-$error = NULL;
-$notice = NULL;
-
-if (isset($_POST['submit'])) {
-
-    $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
-
-    //Get form data
-    $name = $_POST['name'];
-    $room_number = $_POST['room_number'];
-    $price = $_POST['price'];
-
-
-    $checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
-
-    if (mysqli_num_rows($checkroom_number) > 0) {
-        $error = "This Room Number Has Already Been Registered!";
-    } else {
-        //Form Is Valid 
-
-        //Connect To Database
-        $mysqli = new MySQLi('localhost', 'root', '', 'MHPBS');
-
-        //Sanitize 	form data
-        $name = $mysqli->real_escape_string($name);
-        $room_number = $mysqli->real_escape_string($room_number);
-        $price = $mysqli->real_escape_string($price);
-
-        $insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
-
-        if ($insert) {
-
-            header("Location: index.php");
-            exit;
-        } else {
-            echo $mysqli->error;
-        }
-    }
-}
-
-?>
-
-<?php
-echo $error;
-?>

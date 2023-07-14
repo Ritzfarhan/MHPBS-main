@@ -95,17 +95,40 @@ include 'database.php';
                             <div class="header-button">
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <?php
+                                            // $id = $_SESSION['id']
+                                            if ($row['image_admin'] == '') {
+                                                echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                            } else {
+                                                echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                            }
+                                            //mysqli_close($connection);
+                                            ?>
+                                        </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><?php echo $_SESSION['username'] ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
+                                                <div class="image">
 
-                                                <h5 class="name">
-                                                    <a href="#"><?php echo $_SESSION['firstname'] ?></a>
-                                                </h5>
-                                                <span class="email"><?php echo $_SESSION['email'] ?></span>
+                                                    <?php
+                                                    if ($row['image_admin'] == '') {
+                                                        echo "<img src='images/icon/avatar-01.jpg' alt='John Doe' />";
+                                                    } else {
+                                                        echo "<img src='uploads/" .  $image . "' alt='admin' />";
+                                                    }
+                                                    ?>
+                                                    <!-- <img src="images/icon/avatar-01.jpg" alt="John Doe" />-->
 
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#"><?php echo $_SESSION['firstname'] ?></a>
+                                                    </h5>
+                                                    <span class="email"><?php echo $_SESSION['email'] ?></span>
+                                                </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">

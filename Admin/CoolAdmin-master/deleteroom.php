@@ -1,5 +1,5 @@
 <?php
-$conn =mysqli_connect("localhost","fypmhpbs","iDRIS@976","sdmarrio_mhpbs");
+$conn =mysqli_connect("localhost", "root", "654321", "mhpbs");
 
 error_reporting(0);
 
@@ -15,4 +15,3 @@ if ($data){
 }else{
 	echo " Failed to Delete";
 }
-?>

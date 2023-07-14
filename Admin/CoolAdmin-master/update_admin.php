@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'database.php';
-//$connection=mysqli_connect("localhost","fypmhpbs","iDRIS@976","sdmarrio_mhpbs");
+//$connection=mysqli_connect("localhost", "root", "654321", "mhpbs");
 
 if (isset($_POST['update_admin_data'])) {
     $id = $_POST['id'];

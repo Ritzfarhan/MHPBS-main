@@ -11,120 +11,115 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 require 'database.php';
 
-if(isset ($_POST['submit'])){
-	
-    $mysqli = new MySQLi('localhost','fypmhpbs','iDRIS@976','sdmarrio_mhpbs');	
-	
-	//Get form data
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$password2 = $_POST['password2'];
-	$email = $_POST['email'];
-	$phone = $_POST['phone'];
-	$hotel_id = $_POST['hotel_id'];
-	
-	$checkemail = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE email = '$email'");
-	$checkusername = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE username = '$username'");	
-	$checkphone = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE phone = '$phone'");
-	
-	$uppercase = preg_match('@[A-Z]@', $password);
+if (isset($_POST['submit'])) {
+
+    $mysqli = new MySQLi("localhost", "root", "654321", "mhpbs");
+
+    //Get form data
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $password2 = $_POST['password2'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $hotel_id = $_POST['hotel_id'];
+
+    $checkemail = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE email = '$email'");
+    $checkusername = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE username = '$username'");
+    $checkphone = mysqli_query($mysqli, "SELECT * FROM admin_users WHERE phone = '$phone'");
+
+    $uppercase = preg_match('@[A-Z]@', $password);
     $lowercase = preg_match('@[a-z]@', $password);
     $number    = preg_match('@[0-9]@', $password);
     $specialChars = preg_match('@[^\w]@', $password);
-	
-	if(strlen($username) < 5 ){
-		$error = "Your username must be at least 5 Characters";	
-	}elseif ($password2 != $password){
-		$error = "Your password do not match";
-	}elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8){
-		$error = "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.";
-	}elseif (mysqli_num_rows($checkemail) > 0){
-		$error = "This Email Has Already Been Used";
-	}elseif (mysqli_num_rows($checkusername) > 0){
-		$error = "This Username Has Already Been Used";
-	}elseif (mysqli_num_rows($checkphone) > 0 ){
-		$error = "This Phone Number Has Already Been Used";
-	}elseif ($hotel_id != "A19DW0589"){
-		$error = "Please Contact Hotel Office for Hotel ID";
-	}else{
-		//Form Is Valid 
-		
-		//Connect To Database
-		$mysqli = new MySQLi('localhost','root','','MHPBS');
-		
-		//Sanitize 	form data
-		$firstname = $mysqli->real_escape_string($firstname);
-		$lastname = $mysqli->real_escape_string($lastname);
-		$username = $mysqli->real_escape_string($username);
-		$password = $mysqli->real_escape_string($password);
-		$password2 = $mysqli->real_escape_string($password2);
-		$email = $mysqli->real_escape_string($email);
-		$phone = $mysqli->real_escape_string($phone);
-		$hotel_id = $mysqli->real_escape_string($hotel_id);
-		
 
-		
-		//Generate Vkey
-		$vkey = md5(time().$username);
+    if (strlen($username) < 5) {
+        $error = "Your username must be at least 5 Characters";
+    } elseif ($password2 != $password) {
+        $error = "Your password do not match";
+    } elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+        $error = "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.";
+    } elseif (mysqli_num_rows($checkemail) > 0) {
+        $error = "This Email Has Already Been Used";
+    } elseif (mysqli_num_rows($checkusername) > 0) {
+        $error = "This Username Has Already Been Used";
+    } elseif (mysqli_num_rows($checkphone) > 0) {
+        $error = "This Phone Number Has Already Been Used";
+    } elseif ($hotel_id != "A19DW0589") {
+        $error = "Please Contact Hotel Office for Hotel ID";
+    } else {
+        //Form Is Valid 
 
-		
-		//Insert account into database
-		$password = md5 ($password);
-		$insert = $mysqli->query("INSERT into admin_users(firstname,lastname,username,password,email,phone,hotel_id,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$hotel_id','$vkey')");
-		
-		if($insert){
-			
-			//Send Email
-	$message = "<p>Please click the link below to verify your account</p>";
-	$message .= "<a href='http://localhost/MHPBS/Admin/CoolAdmin-master/admin_verify.php?vkey=$vkey'>";
-	$message .= "Verify Account";
-	$message .= "</a>";
+        //Connect To Database
+        $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
-	send_mail($email, "MHPBS Admin Verify Email Address", $message);
-			
-			
-			
-		}else{
-			echo $mysqli->error;
-		}
-		
-	} 
+        //Sanitize 	form data
+        $firstname = $mysqli->real_escape_string($firstname);
+        $lastname = $mysqli->real_escape_string($lastname);
+        $username = $mysqli->real_escape_string($username);
+        $password = $mysqli->real_escape_string($password);
+        $password2 = $mysqli->real_escape_string($password2);
+        $email = $mysqli->real_escape_string($email);
+        $phone = $mysqli->real_escape_string($phone);
+        $hotel_id = $mysqli->real_escape_string($hotel_id);
+
+
+
+        //Generate Vkey
+        $vkey = md5(time() . $username);
+
+
+        //Insert account into database
+        $password = md5($password);
+        $insert = $mysqli->query("INSERT into admin_users(firstname,lastname,username,password,email,phone,hotel_id,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$hotel_id','$vkey')");
+
+        if ($insert) {
+
+            //Send Email
+            $message = "<p>Please click the link below to verify your account</p>";
+            $message .= "<a href='http://3.27.90.201/MHPBS-main/Admin/CoolAdmin-master/admin_verify.php?vkey=$vkey'>";
+            $message .= "Verify Account";
+            $message .= "</a>";
+
+            send_mail($email, "MHPBS Admin Verify Email Address", $message);
+        } else {
+            echo $mysqli->error;
+        }
+    }
 }
 
 function send_mail($to, $subject, $message)
 {
-	$mail = new PHPMailer(true);
+    $mail = new PHPMailer(true);
 
-	try {
-	    //Server settings
-	    $mail->SMTPDebug = 0;                                       // Enable verbose debug output
-	    $mail->isSMTP();                                            // Set mailer to use SMTP
-	    $mail->Host       = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
-	    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-	    $mail->Username   = 'sposenn.dua@gmail.com';                     // SMTP username
-	    $mail->Password   = 'Qazwsx123_';                               // SMTP password
-	    $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-	    $mail->Port       = 587;                                    // TCP port to connect to
+    try {
+        //Server settings
+        $mail->SMTPDebug = 0;                                       // Enable verbose debug output
+        $mail->isSMTP();                                            // Set mailer to use SMTP
+        $mail->Host       = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'sposenn.dua@gmail.com';                     // SMTP username
+        $mail->Password   = 'Qazwsx123_';                               // SMTP password
+        $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+        $mail->Port       = 587;                                    // TCP port to connect to
 
-	    $mail->setFrom('sposenn.dua@gmail.com', 'MHPBS');
-	    //Recipients
-	    $mail->addAddress($to);
+        $mail->setFrom('sposenn.dua@gmail.com', 'MHPBS');
+        //Recipients
+        $mail->addAddress($to);
 
-	    // Content
-	    $mail->isHTML(true);                                  // Set email format to HTML
-	    $mail->Subject = $subject;
-	    $mail->Body    = $message;
+        // Content
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body    = $message;
 
-	    $mail->send();
-	    
-		header("Location: admin_thankyou.php");
-		exit;
-		
-	} catch (Exception $e) {
-	    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-	}
+        $mail->send();
+
+        header("Location: admin_thankyou.php");
+        exit;
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
 }
 
 ?>
@@ -189,7 +184,7 @@ function send_mail($to, $subject, $message)
                                 <div class="form-group">
                                     <label>Username</label>
                                     <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
-                                </div>								
+                                </div>
                                 <div class="form-group">
                                     <label>Password</label>
                                     <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
@@ -205,21 +200,21 @@ function send_mail($to, $subject, $message)
                                 <div class="form-group">
                                     <label>Phone Number</label>
                                     <input class="au-input au-input--full" type="text" name="phone" placeholder="Phone Number">
-                                </div>	
+                                </div>
                                 <div class="form-group">
                                     <label>Hotel ID</label>
                                     <input class="au-input au-input--full" type="text" name="hotel_id" placeholder="Hotel ID">
-                                </div>								
+                                </div>
                                 <div class="login-checkbox">
                                     <label>
                                         <input type="checkbox" name="aggree">Agree the terms and policy
                                     </label>
                                 </div>
-								<input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Register">
+                                <input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type="submit" name="submit" value="Register">
                             </form>
-<?php
- echo $error;
-?>
+                            <?php
+                            echo $error;
+                            ?>
                             <div class="register-link">
                                 <p>
                                     Already have account?
@@ -231,10 +226,10 @@ function send_mail($to, $subject, $message)
                 </div>
                 <footer class="footer">
                     <br>
-    <div class="" style="text-align: center">
-        &copy; Copyright <strong><span>Marriott</span></strong>
-    </div>
-</footer>
+                    <div class="" style="text-align: center">
+                        &copy; Copyright <strong><span>Marriott</span></strong>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>

@@ -198,7 +198,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -271,7 +271,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -345,7 +345,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);
@@ -419,7 +419,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $conn = $connection;
+                                        $conn = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                         // Check connection
                                         if ($conn->connect_error) {
                                             die("Connection failed: " . $conn->connect_error);

@@ -3,59 +3,58 @@ session_start();
 
 $error = NULL;
 
-if(isset($_POST['submit'])){
-	//Connect to the Database
-	$username = $_POST ['username'];
-	$password = $_POST ['password'];	
-	
-	$mysqli = new MySQLi('localhost','fypmhpbs','iDRIS@976','sdmarrio_mhpbs');
-	
-	//Get form data
-	$username = $mysqli->real_escape_string($_POST['username']);
-	$password = $mysqli->real_escape_string($_POST['password']);
-	$password = md5 ($password);
-	
-	//Query the database
-	$resultSet = $mysqli->query("SELECT * FROM admin_users WHERE username = '$username' AND password = '$password' LIMIT 1");
-	
-	if($resultSet->num_rows !=0){
-		//Process Loginaa
-		$row = $resultSet->fetch_assoc();
-		$verified = $row['verified'];
+if (isset($_POST['submit'])) {
+    //Connect to the Database
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $mysqli = new MySQLi("localhost", "root", "654321", "mhpbs");
+
+    //Get form data
+    $username = $mysqli->real_escape_string($_POST['username']);
+    $password = $mysqli->real_escape_string($_POST['password']);
+    $password = md5($password);
+
+    //Query the database
+    $resultSet = $mysqli->query("SELECT * FROM admin_users WHERE username = '$username' AND password = '$password' LIMIT 1");
+
+    if ($resultSet->num_rows != 0) {
+        //Process Loginaa
+        $row = $resultSet->fetch_assoc();
+        $verified = $row['verified'];
         $id = $row['id'];
-		$email = $row['email'];
-		$firstname = $row['firstname'];
-		$lastname = $row['lastname'];
-		$phone = $row['phone'];
-		$createdate = $row['createdate'];
-		$date = $row['createdate'];
-		$date = strtotime($date);
-		$date = date('M d Y',$date);;
-		
-		
-		if($verified == 1){
-			//Continue Processing
-			echo "Your account was verified and you have been logged in";
-			
-			$_SESSION['loggedin'] = TRUE;
+        $email = $row['email'];
+        $firstname = $row['firstname'];
+        $lastname = $row['lastname'];
+        $phone = $row['phone'];
+        $createdate = $row['createdate'];
+        $date = $row['createdate'];
+        $date = strtotime($date);
+        $date = date('M d Y', $date);;
+
+
+        if ($verified == 1) {
+            //Continue Processing
+            echo "Your account was verified and you have been logged in";
+
+            $_SESSION['loggedin'] = TRUE;
             $_SESSION['id'] = $id;
-			$_SESSION['username'] = $username;
-			$_SESSION['firstname'] = $firstname;
-			$_SESSION['email'] = $email;
-			$_SESSION['lastname'] = $lastname;
-			$_SESSION['phone'] = $phone;
-			$_SESSION['createdate'] = $createdate;
-			
-			header ('location:index.php');
-			die;
-		}else{
-			$error = "This account has not yet been verified. An email was sent to $email on $date";	
-		}
-	}else{
-		//Invalid Credentials
-		$error = "The Username Or Password you entered is incorect";
-	}
-	
+            $_SESSION['username'] = $username;
+            $_SESSION['firstname'] = $firstname;
+            $_SESSION['email'] = $email;
+            $_SESSION['lastname'] = $lastname;
+            $_SESSION['phone'] = $phone;
+            $_SESSION['createdate'] = $createdate;
+
+            header('location:index.php');
+            die;
+        } else {
+            $error = "This account has not yet been verified. An email was sent to $email on $date";
+        }
+    } else {
+        //Invalid Credentials
+        $error = "The Username Or Password you entered is incorect";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -124,11 +123,11 @@ if(isset($_POST['submit'])){
                                         <a href="admin_forgot.php">Forgotten Password?</a>
                                     </label>
                                 </div>
-											<input class="au-btn au-btn--block au-btn--green m-b-20" type ="submit" name = "submit" value="Sign In">
+                                <input class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="Sign In">
                             </form>
                             <div class="register-link">
                                 <p>
-									<?php  echo $error  ?><br><br>
+                                    <?php echo $error  ?><br><br>
                                     Don't Have An Account?
                                     <a href="registration.php">Sign Up Here</a>
                                 </p>
@@ -139,13 +138,13 @@ if(isset($_POST['submit'])){
             </div>
         </div>
         <footer class="footer">
-    <div class="" style="text-align: center">
-        &copy; Copyright <strong><span>Marriott</span></strong>
-    </div>
-</footer>
+            <div class="" style="text-align: center">
+                &copy; Copyright <strong><span>Marriott</span></strong>
+            </div>
+        </footer>
     </div>
 
-    
+
 
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
