@@ -5,7 +5,30 @@
     <title>Rooms</title>
     <?php
     session_start();
-    include 'database.php';
+    require "database.php";
+
+    if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
+        header("index.php");
+    }
+
+
+
+    //$id = $_SESSION['id'];
+    $username = $_SESSION['username'];
+
+    $sql = "SELECT * FROM admin_users WHERE username = '$username'";
+    $result =  mysqli_query($connection, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+
+    $username = $row['username'];
+    $id = $row['id'];;
+    $email = $row['email'];
+    $firstname = $row['firstname'];
+    $lastname = $row['lastname'];
+    $phone = $row['phone'];
+    $image = $row['image_admin']
+
     ?>
     <!DOCTYPE html>
     <html lang="en">

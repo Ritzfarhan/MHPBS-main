@@ -1,6 +1,28 @@
 <?php
 session_start();
-include 'database.php';
+require "database.php";
+
+if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
+    header("index.php");
+}
+
+
+
+//$id = $_SESSION['id'];
+$username = $_SESSION['username'];
+
+$sql = "SELECT * FROM admin_users WHERE username = '$username'";
+$result =  mysqli_query($connection, $sql);
+$row = mysqli_fetch_assoc($result);
+
+
+$username = $row['username'];
+$id = $row['id'];;
+$email = $row['email'];
+$firstname = $row['firstname'];
+$lastname = $row['lastname'];
+$phone = $row['phone'];
+$image = $row['image_admin'];
 ?>
 <?php
 $error = NULL;
@@ -8,7 +30,7 @@ $notice = NULL;
 
 if (isset($_POST['submit'])) {
 
-    $mysqli = $connection;
+    $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
     //Get form data
     $name = $_POST['name'];
@@ -24,7 +46,7 @@ if (isset($_POST['submit'])) {
         //Form Is Valid 
 
         //Connect To Database
-        $mysqli = new MySQLi("localhost", "root", "654321", "mhpbs");
+        $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
         //Sanitize 	form data
         $name = $mysqli->real_escape_string($name);
@@ -211,7 +233,7 @@ if (isset($_POST['submit'])) {
                                                         <select name="name" class="form-control" required>
                                                             <option value="">Room Type</option>
                                                             <?php
-                                                            $con = mysqli_connect("localhost", "root", "654321", "mhps");
+                                                            $con = mysqli_connect("localhost", "root", "654321", "mhpbs");
                                                             $sql = "SELECT * FROM roomtype";
                                                             $result = mysqli_query($con, $sql);
                                                             while ($row = mysqli_fetch_array($result)) {

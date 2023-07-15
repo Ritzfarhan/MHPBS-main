@@ -3,48 +3,47 @@ session_start();
 
 $error = NULL;
 
-if(isset($_POST['submit'])){
-	//Connect to the Database
-	$username = $_POST ['username'];
-	$password = $_POST ['password'];	
-	
-	$mysqli = new MySQLi('localhost','root','','MHPBS');
-	
-	//Get form data
-	$username = $mysqli->real_escape_string($_POST['username']);
-	$password = $mysqli->real_escape_string($_POST['password']);
-	$password = md5 ($password);
-	
-	//Query the database
-	$resultSet = $mysqli->query("SELECT * FROM users WHERE username = '$username' AND password = '$password' LIMIT 1");
-	
-	if($resultSet->num_rows !=0){
-		//Process Login
-		$row = $resultSet->fetch_assoc();
-		$verified = $row['verified'];
-		$email = $row['email'];
-		$date = $row['createdate'];
-		$date = strtotime($date);
-		$date = date('M d Y',$date);
-		
-		
-		if($verified == 1){
-			//Continue Processing
-			echo "Your account was verified and you have been logged in";
-			
-			$_SESSION['loggedin'] = TRUE;
-			$_SESSION['user'] = $username;	
-			
-			header ('location:index.php');
-			die;
-		}else{
-			$error = "This account has not yet been verified. An email was sent to $email on $date";	
-		}
-	}else{
-		//Invalid Credentials
-		$error = "The Username Or Password you entered is incorect";
-	}
-	
+if (isset($_POST['submit'])) {
+  //Connect to the Database
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+
+  $mysqli = new MySQLi('localhost', 'root', '654321', 'MHPBS');
+
+  //Get form data
+  $username = $mysqli->real_escape_string($_POST['username']);
+  $password = $mysqli->real_escape_string($_POST['password']);
+  $password = md5($password);
+
+  //Query the database
+  $resultSet = $mysqli->query("SELECT * FROM users WHERE username = '$username' AND password = '$password' LIMIT 1");
+
+  if ($resultSet->num_rows != 0) {
+    //Process Login
+    $row = $resultSet->fetch_assoc();
+    $verified = $row['verified'];
+    $email = $row['email'];
+    $date = $row['createdate'];
+    $date = strtotime($date);
+    $date = date('M d Y', $date);
+
+
+    if ($verified == 1) {
+      //Continue Processing
+      echo "Your account was verified and you have been logged in";
+
+      $_SESSION['loggedin'] = TRUE;
+      $_SESSION['user'] = $username;
+
+      header('location:index.php');
+      die;
+    } else {
+      $error = "This account has not yet been verified. An email was sent to $email on $date";
+    }
+  } else {
+    //Invalid Credentials
+    $error = "The Username Or Password you entered is incorect";
+  }
 }
 ?>
 
@@ -139,7 +138,7 @@ if(isset($_POST['submit'])){
                   <p class="mb-0">Enter your username and password to sign in</p>
                 </div>
                 <div class="card-body">
-                  <form method="POST" action = "" role="form">
+                  <form method="POST" action="" role="form">
                     <label>Username</label>
                     <div class="mb-3">
                       <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="email-addon">
@@ -151,14 +150,14 @@ if(isset($_POST['submit'])){
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
                       <label class="form-check-label" for="rememberMe">Remember me</label>
-<div class="text-center">				
-<?php
- echo $error;
-?>	
- </div>							
+                      <div class="text-center">
+                        <?php
+                        echo $error;
+                        ?>
+                      </div>
                     </div>
                     <div class="text-center">
-					 <input id="button " type ="submit" name ="submit" value="Login" class="btn bg-gradient-info w-100 mt-4 mb-0">	
+                      <input id="button " type="submit" name="submit" value="Login" class="btn bg-gradient-info w-100 mt-4 mb-0">
                     </div>
                   </form>
                 </div>
@@ -166,7 +165,7 @@ if(isset($_POST['submit'])){
                   <p class="mb-4 text-sm mx-auto">
                     Forgot your password?
                     <a href="forgot.php" class="text-info text-gradient font-weight-bold">Reset Password</a>
-                  </p>					
+                  </p>
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
                     <a href="registration.php" class="text-info text-gradient font-weight-bold">Sign up</a>

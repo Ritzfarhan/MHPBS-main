@@ -3,27 +3,20 @@
 $email = $_GET['email'];
 $reset_token = $_GET['reset_token'];
 
-$connection = new MySQLi('localhost', 'fypmhpbs', 'iDRIS@976', 'sdmarrio_mhpbs');
+$connection = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
 $sql = "SELECT * FROM users WHERE email = '$email'";
 $result = mysqli_query($connection, $sql);
-if (mysqli_num_rows($result) > 0)
-{
-	$user = mysqli_fetch_object($result);
-	if ($user->reset_token == $reset_token)
-	{
-
-	}
-	else
-	{
-		     header("Location: expired.php");
-		     exit;	
-	}
-}
-else
-{
-		     header("Location: unsuccessemail.php");
-		     exit;	
+if (mysqli_num_rows($result) > 0) {
+  $user = mysqli_fetch_object($result);
+  if ($user->reset_token == $reset_token) {
+  } else {
+    header("Location: expired.php");
+    exit;
+  }
+} else {
+  header("Location: unsuccessemail.php");
+  exit;
 }
 
 ?>
@@ -119,21 +112,21 @@ else
                   <p class="mb-0">Please enter your new password</p>
                 </div>
                 <div class="card-body">
-                  <form method="POST" action = "new-password.php" role="form">
-			<input type="hidden" name="email" value="<?php echo $email; ?>">
-			<input type="hidden" name="reset_token" value="<?php echo $reset_token; ?>">					  
-                    <label for= "new_password">New Password</label>
+                  <form method="POST" action="new-password.php" role="form">
+                    <input type="hidden" name="email" value="<?php echo $email; ?>">
+                    <input type="hidden" name="reset_token" value="<?php echo $reset_token; ?>">
+                    <label for="new_password">New Password</label>
                     <div class="mb-3">
                       <input id="new_password" type="password" name="new_password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="email-addon" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
-                    </div>						  
-					  
+                    </div>
+
                     <div class="form-check form-switch">
 
-<div class="text-center">				
- </div>							
+                      <div class="text-center">
+                      </div>
                     </div>
                     <div class="text-center">
-					 <input id="button " type ="submit" name ="submit" value="Reset Your Password" class="btn bg-gradient-info w-100 mt-4 mb-0">	
+                      <input id="button " type="submit" name="submit" value="Reset Your Password" class="btn bg-gradient-info w-100 mt-4 mb-0">
                     </div>
                   </form>
                 </div>
@@ -144,56 +137,56 @@ else
                   </p>
                 </div>
               </div>
-				
-<script>
-var myInput = document.getElementById("new_password");
-var letter = document.getElementById("letter");
-var capital = document.getElementById("capital");
-var number = document.getElementById("number");
-var length = document.getElementById("length");
 
-// When the user starts to type something inside the password field
-myInput.onkeyup = function() {
-  // Validate lowercase letters
-  var lowerCaseLetters = /[a-z]/g;
-  if(myInput.value.match(lowerCaseLetters)) {  
-    letter.classList.remove("invalid");
-    letter.classList.add("valid");
-  } else {
-    letter.classList.remove("valid");
-    letter.classList.add("invalid");
-  }
-  
-  // Validate capital letters
-  var upperCaseLetters = /[A-Z]/g;
-  if(myInput.value.match(upperCaseLetters)) {  
-    capital.classList.remove("invalid");
-    capital.classList.add("valid");
-  } else {
-    capital.classList.remove("valid");
-    capital.classList.add("invalid");
-  }
+              <script>
+                var myInput = document.getElementById("new_password");
+                var letter = document.getElementById("letter");
+                var capital = document.getElementById("capital");
+                var number = document.getElementById("number");
+                var length = document.getElementById("length");
 
-  // Validate numbers
-  var numbers = /[0-9]/g;
-  if(myInput.value.match(numbers)) {  
-    number.classList.remove("invalid");
-    number.classList.add("valid");
-  } else {
-    number.classList.remove("valid");
-    number.classList.add("invalid");
-  }
-  
-  // Validate length
-  if(myInput.value.length >= 8) {
-    length.classList.remove("invalid");
-    length.classList.add("valid");
-  } else {
-    length.classList.remove("valid");
-    length.classList.add("invalid");
-  }
-}	
-				</script>
+                // When the user starts to type something inside the password field
+                myInput.onkeyup = function() {
+                  // Validate lowercase letters
+                  var lowerCaseLetters = /[a-z]/g;
+                  if (myInput.value.match(lowerCaseLetters)) {
+                    letter.classList.remove("invalid");
+                    letter.classList.add("valid");
+                  } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                  }
+
+                  // Validate capital letters
+                  var upperCaseLetters = /[A-Z]/g;
+                  if (myInput.value.match(upperCaseLetters)) {
+                    capital.classList.remove("invalid");
+                    capital.classList.add("valid");
+                  } else {
+                    capital.classList.remove("valid");
+                    capital.classList.add("invalid");
+                  }
+
+                  // Validate numbers
+                  var numbers = /[0-9]/g;
+                  if (myInput.value.match(numbers)) {
+                    number.classList.remove("invalid");
+                    number.classList.add("valid");
+                  } else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                  }
+
+                  // Validate length
+                  if (myInput.value.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                  } else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                  }
+                }
+              </script>
             </div>
             <div class="col-md-6">
               <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
@@ -280,4 +273,4 @@ myInput.onkeyup = function() {
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
 </body>
 
-</html>	
+</html>

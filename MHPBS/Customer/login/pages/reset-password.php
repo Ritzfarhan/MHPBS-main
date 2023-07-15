@@ -3,25 +3,18 @@
 $email = $_GET['email'];
 $reset_token = $_GET['reset_token'];
 
-$connection = new MySQLi('localhost', 'root', '', 'mhpbs');
+$connection = new MySQLi('localhost', 'root', '654321', 'mhpbs');
 
 $sql = "SELECT * FROM users WHERE email = '$email'";
 $result = mysqli_query($connection, $sql);
-if (mysqli_num_rows($result) > 0)
-{
-	$user = mysqli_fetch_object($result);
-	if ($user->reset_token == $reset_token)
-	{
-
-	}
-	else
-	{
-		echo "Recovery email has been expired";
-	}
-}
-else
-{
-	echo "Email does not exists";
+if (mysqli_num_rows($result) > 0) {
+  $user = mysqli_fetch_object($result);
+  if ($user->reset_token == $reset_token) {
+  } else {
+    echo "Recovery email has been expired";
+  }
+} else {
+  echo "Email does not exists";
 }
 
 ?>
@@ -117,21 +110,21 @@ else
                   <p class="mb-0">Please enter your new password</p>
                 </div>
                 <div class="card-body">
-                  <form method="POST" action = "new-password.php" role="form">
-			<input type="hidden" name="email" value="<?php echo $email; ?>">
-			<input type="hidden" name="reset_token" value="<?php echo $reset_token; ?>">					  
+                  <form method="POST" action="new-password.php" role="form">
+                    <input type="hidden" name="email" value="<?php echo $email; ?>">
+                    <input type="hidden" name="reset_token" value="<?php echo $reset_token; ?>">
                     <label>Password</label>
                     <div class="mb-3">
                       <input type="password" name="new_password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="email-addon">
-                    </div>						  
-					  
+                    </div>
+
                     <div class="form-check form-switch">
 
-<div class="text-center">				
- </div>							
+                      <div class="text-center">
+                      </div>
                     </div>
                     <div class="text-center">
-					 <input id="button " type ="submit" name ="submit" value="Reset Your Password" class="btn bg-gradient-info w-100 mt-4 mb-0">	
+                      <input id="button " type="submit" name="submit" value="Reset Your Password" class="btn bg-gradient-info w-100 mt-4 mb-0">
                     </div>
                   </form>
                 </div>
@@ -228,4 +221,4 @@ else
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
 </body>
 
-</html>	
+</html>

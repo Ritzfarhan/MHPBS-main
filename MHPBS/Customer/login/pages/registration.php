@@ -12,106 +12,101 @@ require 'vendor/autoload.php';
 require 'database.php';
 
 
-if(isset ($_POST['submit'])){
-	
-    $mysqli = new MySQLi('localhost','root','','MHPBS');	
-	
-	//Get form data
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$password2 = $_POST['password2'];
-	$email = $_POST['email'];
-	$phone = $_POST['phone'];
-	
-	$checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
-	$checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");	
-	
-	if(strlen($username) < 5 ){
-		$error = "Your username must be at least 5 Characters";	
-	}elseif ($password2 != $password){
-		$error = "Your password do not match";
-	}elseif (mysqli_num_rows($checkemail) > 0){
-		$error = "This Email Has Already Been Used";
-	}elseif (mysqli_num_rows($checkusername) > 0) {
-		$error = "This Username Has Already Been Used";
-	}else{
-		//Form Is Valid 
-		
-		//Connect To Database
-		$mysqli = new MySQLi('localhost','root','','MHPBS');
-		
-		//Sanitize 	form data
-		$firstname = $mysqli->real_escape_string($firstname);
-		$lastname = $mysqli->real_escape_string($lastname);
-		$username = $mysqli->real_escape_string($username);
-		$password = $mysqli->real_escape_string($password);
-		$password2 = $mysqli->real_escape_string($password2);
-		$email = $mysqli->real_escape_string($email);
-		$phone = $mysqli->real_escape_string($phone);
-		
+if (isset($_POST['submit'])) {
 
-		
-		//Generate Vkey
-		$vkey = md5(time().$username);
+  $mysqli = new MySQLi('localhost', 'root', '654321', 'MHPBS');
 
-		
-		//Insert account into database
-		$password = md5 ($password);
-		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,phone,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$vkey')");
-		
-		if($insert){
-			
-			//Send Email
-	$message = "<p>Please click the link below to verify your account</p>";
-	$message .= "<a href='http://localhost/MHPBS/verify.php?vkey=$vkey'>";
-	$message .= "Verify Account";
-	$message .= "</a>";
+  //Get form data
+  $firstname = $_POST['firstname'];
+  $lastname = $_POST['lastname'];
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $password2 = $_POST['password2'];
+  $email = $_POST['email'];
+  $phone = $_POST['phone'];
 
-	send_mail($email, "MHPBS Reset Password", $message);
-			
-			
-			
-		}else{
-			echo $mysqli->error;
-		}
-		
-	} 
+  $checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
+  $checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");
+
+  if (strlen($username) < 5) {
+    $error = "Your username must be at least 5 Characters";
+  } elseif ($password2 != $password) {
+    $error = "Your password do not match";
+  } elseif (mysqli_num_rows($checkemail) > 0) {
+    $error = "This Email Has Already Been Used";
+  } elseif (mysqli_num_rows($checkusername) > 0) {
+    $error = "This Username Has Already Been Used";
+  } else {
+    //Form Is Valid 
+
+    //Connect To Database
+    $mysqli = new MySQLi('localhost', 'root', '654321', 'MHPBS');
+
+    //Sanitize 	form data
+    $firstname = $mysqli->real_escape_string($firstname);
+    $lastname = $mysqli->real_escape_string($lastname);
+    $username = $mysqli->real_escape_string($username);
+    $password = $mysqli->real_escape_string($password);
+    $password2 = $mysqli->real_escape_string($password2);
+    $email = $mysqli->real_escape_string($email);
+    $phone = $mysqli->real_escape_string($phone);
+
+
+
+    //Generate Vkey
+    $vkey = md5(time() . $username);
+
+
+    //Insert account into database
+    $password = md5($password);
+    $insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,phone,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$vkey')");
+
+    if ($insert) {
+
+      //Send Email
+      $message = "<p>Please click the link below to verify your account</p>";
+      $message .= "<a href='http://localhost/MHPBS/verify.php?vkey=$vkey'>";
+      $message .= "Verify Account";
+      $message .= "</a>";
+
+      send_mail($email, "MHPBS Reset Password", $message);
+    } else {
+      echo $mysqli->error;
+    }
+  }
 }
 
 function send_mail($to, $subject, $message)
 {
-	$mail = new PHPMailer(true);
+  $mail = new PHPMailer(true);
 
-	try {
-	    //Server settings
-	    $mail->SMTPDebug = 0;                                       // Enable verbose debug output
-	    $mail->isSMTP();                                            // Set mailer to use SMTP
-	    $mail->Host       = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
-	    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-	    $mail->Username   = 'sposenn.dua@gmail.com';                     // SMTP username
-	    $mail->Password   = 'Qazwsx123_';                               // SMTP password
-	    $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-	    $mail->Port       = 587;                                    // TCP port to connect to
+  try {
+    //Server settings
+    $mail->SMTPDebug = 0;                                       // Enable verbose debug output
+    $mail->isSMTP();                                            // Set mailer to use SMTP
+    $mail->Host       = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+    $mail->Username   = 'sposenn.dua@gmail.com';                     // SMTP username
+    $mail->Password   = 'Qazwsx123_';                               // SMTP password
+    $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+    $mail->Port       = 587;                                    // TCP port to connect to
 
-	    $mail->setFrom('sposenn.dua@gmail.com', 'MHPBS');
-	    //Recipients
-	    $mail->addAddress($to);
+    $mail->setFrom('sposenn.dua@gmail.com', 'MHPBS');
+    //Recipients
+    $mail->addAddress($to);
 
-	    // Content
-	    $mail->isHTML(true);                                  // Set email format to HTML
-	    $mail->Subject = $subject;
-	    $mail->Body    = $message;
+    // Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = $subject;
+    $mail->Body    = $message;
 
-	    $mail->send();
-	    
-		header("Location: thankyou.php");
-		exit;
-		
-	} catch (Exception $e) {
-	    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-	}
+    $mail->send();
+
+    header("Location: thankyou.php");
+    exit;
+  } catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  }
 }
 
 ?>
@@ -1401,7 +1396,7 @@ function send_mail($to, $subject, $message)
               </div>
             </div>
             <div class="card-body">
-              <form method="POST" action = "" role="form text-left">
+              <form method="POST" action="" role="form text-left">
                 <div class="mb-3">
                   <input type="text" name="firstname" class="form-control" placeholder="First Name" aria-label=" First Name" aria-describedby="email-addon">
                 </div>
@@ -1417,12 +1412,12 @@ function send_mail($to, $subject, $message)
                 <div class="mb-3">
                   <input type="password" name="password2" class="form-control" placeholder="Re-Enter Password" aria-label="Password" aria-describedby="password-addon">
                 </div>
-                <div class="mb-3">					
+                <div class="mb-3">
                   <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                 </div>
                 <div class="mb-3">
                   <input type="text" name="phone" class="form-control" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="email-addon">
-                </div>				  
+                </div>
                 <div class="form-check form-check-info text-left">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                   <label class="form-check-label" for="flexCheckDefault">
@@ -1430,16 +1425,16 @@ function send_mail($to, $subject, $message)
                   </label>
                 </div>
                 <div class="text-center">
-					<input id="button" class="btn bg-gradient-dark w-100 my-4 mb-2" type ="submit" name ="submit" value="Register">				
+                  <input id="button" class="btn bg-gradient-dark w-100 my-4 mb-2" type="submit" name="submit" value="Register">
                 </div>
                 <p class="text-sm mt-3 mb-0">Already have an account? <a href="login.php" class="text-dark font-weight-bolder">Sign in</a></p>
               </form>
-				<br>
-<div class="text-center">				
-<?php
- echo $error;
-?>	
- </div>	
+              <br>
+              <div class="text-center">
+                <?php
+                echo $error;
+                ?>
+              </div>
             </div>
           </div>
         </div>

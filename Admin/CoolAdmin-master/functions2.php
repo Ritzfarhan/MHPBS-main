@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-  if (isset($_POST['acceptBooking'])) {
+if (isset($_POST['acceptBooking'])) {
     acceptBooking($_POST['acceptBooking']);
 } else if (isset($_POST['rejectBooking'])) {
     rejectBooking($_POST['rejectBooking']);
@@ -19,9 +19,9 @@ function acceptBooking()
 {
 
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -44,9 +44,9 @@ function rejectBooking()
 {
 
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -70,9 +70,9 @@ function finishBooking()
 {
 
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -95,9 +95,9 @@ function finishBooking()
 function deleteBooking()
 {
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 

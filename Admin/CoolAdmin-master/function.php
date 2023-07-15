@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-  if (isset($_POST['closeAppointment'])) {
+if (isset($_POST['closeAppointment'])) {
     closeAppointment($_POST['closeAppointment']);
 } else if (isset($_POST['openAppointment'])) {
     openAppointment($_POST['openAppointment']);
@@ -17,9 +17,9 @@ function closeAppointment()
 {
 
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -42,9 +42,9 @@ function openAppointment()
 {
 
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -67,9 +67,9 @@ function openAppointment()
 function deleteRoom()
 {
     $servername = "localhost";
-    $username = "fypmhpbs";
-    $password = "iDRIS@976";
-    $dbname = "sdmarrio_mhpbs";
+    $username = "root";
+    $password = "654321";
+    $dbname = "mhpbs";
 
     $con = mysqli_connect($servername, $username, $password, $dbname);
 
