@@ -113,7 +113,7 @@ session_start();
           <select id="Sname" name="roomtype" class="form-control" onchange="change_date()" required>
             <option value="">Room Type</option>
             <?php
-            $con = mysqli_connect("localhost", "root", "654321", "MHPBS");
+            $con = mysqli_connect("localhost", "root", "654321", "mhpbs");
             $sql = "SELECT name FROM rooms WHERE status = 0 group by name";
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_array($result)) {

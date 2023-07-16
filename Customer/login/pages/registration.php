@@ -10,75 +10,82 @@ use PHPMailer\PHPMailer\Exception;
 // Load Composer's autoloader
 require 'vendor/autoload.php';
 require 'database.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+if (isset($_POST['submit'])) {
+
+  $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
+
+  //Get form data
+  $firstname = $_POST['firstname'];
+  $lastname = $_POST['lastname'];
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $password2 = $_POST['password2'];
+  $email = $_POST['email'];
+  $ic = $_POST['ic'];
+  $phone = $_POST['phone'];
+  $address = $_POST['address'];
+
+  $checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
+  $checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");
+  $checkphone = mysqli_query($mysqli, "SELECT * FROM users WHERE phone = '$phone'");
+  $checkic = mysqli_query($mysqli, "SELECT * FROM users WHERE ic = '$ic'");
+
+  $uppercase = preg_match('@[A-Z]@', $password);
+  $lowercase = preg_match('@[a-z]@', $password);
+  $number    = preg_match('@[0-9]@', $password);
+  $specialChars = preg_match('@[^\w]@', $password);
+
+  if (strlen($username) < 5) {
+    $error = "Your username must be at least 5 Characters";
+    echo '<script>location.reload();</script>';
+  } elseif ($password2 != $password) {
+    $error = "Your password do not match";
+  } elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+    $error = "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.";
+    echo '<script>location.reload();</script>';
+  } elseif (mysqli_num_rows($checkemail) > 0) {
+    $error = "This Email Has Already Been Used";
+    echo '<script>location.reload();</script>';
+  } elseif (mysqli_num_rows($checkusername) > 0) {
+    $error = "This Username Has Already Been Used";
+    echo '<script>location.reload();</script>';
+  } elseif (mysqli_num_rows($checkphone) > 0) {
+    $error = "This Phone Number Has Already Been Used";
+    echo '<script>location.reload();</script>';
+  } elseif (mysqli_num_rows($checkic) > 0) {
+    $error = "This Identification Number Has Already Been Used";
+    echo '<script>location.reload();</script>';
+  } else {
+    //Form Is Valid 
+
+    //Connect To Database
+    $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
+
+    //Sanitize 	form data
+    $firstname = $mysqli->real_escape_string($firstname);
+    $lastname = $mysqli->real_escape_string($lastname);
+    $username = $mysqli->real_escape_string($username);
+    $password = $mysqli->real_escape_string($password);
+    $password2 = $mysqli->real_escape_string($password2);
+    $email = $mysqli->real_escape_string($email);
+    $phone = $mysqli->real_escape_string($phone);
 
 
-if(isset ($_POST['submit'])){
-	
-    $mysqli = new MySQLi('localhost','root','','MHPBS');
-	
-	//Get form data
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$password2 = $_POST['password2'];
-	$email = $_POST['email'];
-	$ic = $_POST['ic'];
-	$phone = $_POST['phone'];
-	$address = $_POST['address'];
-	
-	$checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
-	$checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");	
-	$checkphone = mysqli_query($mysqli, "SELECT * FROM users WHERE phone = '$phone'");
-	$checkic = mysqli_query($mysqli, "SELECT * FROM users WHERE ic = '$ic'");
-	
-	$uppercase = preg_match('@[A-Z]@', $password);
-    $lowercase = preg_match('@[a-z]@', $password);
-    $number    = preg_match('@[0-9]@', $password);
-    $specialChars = preg_match('@[^\w]@', $password);
-	
-	if(strlen($username) < 5 ){
-		$error = "Your username must be at least 5 Characters";	
-	}elseif ($password2 != $password){
-		$error = "Your password do not match";
-	}elseif(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8){
-		$error = "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.";
-	}elseif (mysqli_num_rows($checkemail) > 0){
-		$error = "This Email Has Already Been Used";
-	}elseif (mysqli_num_rows($checkusername) > 0) {
-		$error = "This Username Has Already Been Used";
-	}elseif (mysqli_num_rows($checkphone) > 0 ){
-		$error = "This Phone Number Has Already Been Used";
-	}elseif (mysqli_num_rows($checkic) > 0 ){
-		$error = "This Identification Number Has Already Been Used";
-	}else{
-		//Form Is Valid 
-		
-		//Connect To Database
-		$mysqli = new MySQLi('localhost','root','','MHPBS');
-		
-		//Sanitize 	form data
-		$firstname = $mysqli->real_escape_string($firstname);
-		$lastname = $mysqli->real_escape_string($lastname);
-		$username = $mysqli->real_escape_string($username);
-		$password = $mysqli->real_escape_string($password);
-		$password2 = $mysqli->real_escape_string($password2);
-		$email = $mysqli->real_escape_string($email);
-		$phone = $mysqli->real_escape_string($phone);
-		
 
-		
-		//Generate Vkey
-		$vkey = md5(time().$username);
+    //Generate Vkey
+    $vkey = md5(time() . $username);
 
-		
-		//Insert account into database
-		$password = md5 ($password);
-		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,ic,phone,address,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$ic','$phone','$address','$vkey')");
-		
+
+    //Insert account into database
+    $password = md5($password);
+    $insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,ic,phone,address,vkey,image_customer) VALUES ( '$firstname','$lastname','$username','$password','$email','$ic','$phone','$address','$vkey','')");
+
     header("Location: login.php");
-		exit;
-		/*if($insert){
+    exit;
+    /*if($insert){
 			
 			//Send Email
 	$message = "<p>Please click the link below to verify your account</p>";
@@ -94,7 +101,7 @@ if(isset ($_POST['submit'])){
 			echo $mysqli->error;
 		}
 		*/
-	} 
+  }
 }
 
 /*function send_mail($to, $subject, $message)
@@ -158,7 +165,7 @@ if(isset ($_POST['submit'])){
 
 <body class="g-sidenav-show  bg-gray-100">
   <!-- Navbar -->
-  
+
   <!-- End Navbar -->
   <section class="min-vh-100 mb-8">
     <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('../assets/img/curved-images/curved14.jpg');">
@@ -177,70 +184,70 @@ if(isset ($_POST['submit'])){
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
             <div class="card-header text-center pt-4">
-              
-            <div class="card-body">
-              <form method="POST" action = "" role="form text-left">
-                <div class="mb-3">
-                  <input type="text" name="firstname" class="form-control" placeholder="First Name" aria-label=" First Name" aria-describedby="email-addon">
-                </div>
-                <div class="mb-3">
-                  <input type="text" name="lastname" class="form-control" placeholder="Last Name" aria-label=" Last Name" aria-describedby="email-addon">
-                </div>
-                <div class="mb-3">
-                  <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="email-addon">
-                </div>
-                <div class="mb-3">
-                  <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
-                </div>
-                <div class="mb-3">
-                  <input type="password" name="password2" class="form-control" placeholder="Re-Enter Password" aria-label="Password" aria-describedby="password-addon">
-                </div>
-                <div class="mb-3">					
-                  <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
-                </div>
-                <div class="mb-3">					
-                  <input type="text" name="ic" class="form-control" placeholder="Identification Number" aria-label="Identification Number" aria-describedby="email-addon">
-                </div>				  
-                <div class="mb-3">
-                  <input type="text" name="phone" class="form-control" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="email-addon">
-                </div>	
-                <div class="mb-3">					
-                  <input type="text" name="address" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="email-addon">
-                </div>					  
-                <div class="form-check form-check-info text-left">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                  <label class="form-check-label" for="flexCheckDefault">
-                    I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
-                  </label>
-                </div>
+
+              <div class="card-body">
+                <form method="POST" action="" role="form text-left">
+                  <div class="mb-3">
+                    <input type="text" name="firstname" class="form-control" placeholder="First Name" aria-label=" First Name" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="lastname" class="form-control" placeholder="Last Name" aria-label=" Last Name" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="password" name="password2" class="form-control" placeholder="Re-Enter Password" aria-label="Password" aria-describedby="password-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="ic" class="form-control" placeholder="Identification Number" aria-label="Identification Number" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="email-addon">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="address" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="email-addon">
+                  </div>
+                  <div class="form-check form-check-info text-left">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                    <label class="form-check-label" for="flexCheckDefault">
+                      I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                    </label>
+                  </div>
+                  <div class="text-center">
+                    <input id="button" class="btn bg-gradient-dark w-100 my-4 mb-2" type="submit" name="submit" value="Register">
+                  </div>
+                  <p class="text-sm mt-3 mb-0">Already have an account? <a href="login.php" class="text-dark font-weight-bolder">Sign in</a></p>
+                </form>
+                <br>
                 <div class="text-center">
-					<input id="button" class="btn bg-gradient-dark w-100 my-4 mb-2" type ="submit" name ="submit" value="Register">				
+                  <?php
+                  echo $error;
+                  ?>
                 </div>
-                <p class="text-sm mt-3 mb-0">Already have an account? <a href="login.php" class="text-dark font-weight-bolder">Sign in</a></p>
-              </form>
-				<br>
-<div class="text-center">				
-<?php
- echo $error;
-?>	
- </div>	
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </section>
   <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <footer class="footer py-5">
-      <div class="row">
-        <div class="col-8 mx-auto text-center mt-1">
-          <p class="mb-0 text-secondary">
-            Copyright © <script>
-              document.write(new Date().getFullYear())
-            </script> By Marriott.
-          </p>
-        </div>
+    <div class="row">
+      <div class="col-8 mx-auto text-center mt-1">
+        <p class="mb-0 text-secondary">
+          Copyright © <script>
+            document.write(new Date().getFullYear())
+          </script> By Marriott.
+        </p>
       </div>
+    </div>
     </div>
   </footer>
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->

@@ -3,7 +3,7 @@ session_start();
 require "database.php";
 
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
-    header("index.php");
+    header("Location: index.php");
 }
 
 
@@ -17,7 +17,7 @@ $row = mysqli_fetch_assoc($result);
 
 
 $username = $row['username'];
-$id = $row['id'];;
+$id = $row['id'];
 $email = $row['email'];
 $firstname = $row['firstname'];
 $lastname = $row['lastname'];
@@ -28,41 +28,39 @@ $image = $row['image_admin'];
 $error = NULL;
 $notice = NULL;
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 if (isset($_POST['submit'])) {
-
     $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
-
-    //Get form data
+    // Get form data
     $name = $_POST['name'];
     $room_number = $_POST['room_number'];
     $price = $_POST['price'];
-
-
-    $checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
-
-    if (mysqli_num_rows($checkroom_number) > 0) {
+    // Sanitize form data
+    $name = $mysqli->real_escape_string($name);
+    $room_number = $mysqli->real_escape_string($room_number);
+    $price = $mysqli->real_escape_string($price);
+    // Check if room number already exists
+    $checkroom_number = $mysqli->query("SELECT * FROM rooms WHERE room_number = '$room_number'");
+    if ($checkroom_number->num_rows > 0) {
         $error = "This Room Number Has Already Been Registered!";
     } else {
-        //Form Is Valid 
-
-        //Connect To Database
-        $mysqli = new MySQLi('localhost', 'root', '654321', 'mhpbs');
-
-        //Sanitize 	form data
-        $name = $mysqli->real_escape_string($name);
-        $room_number = $mysqli->real_escape_string($room_number);
-        $price = $mysqli->real_escape_string($price);
-
-        $insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
+        // Insert data into database
+        $insert = $mysqli->query("INSERT INTO rooms (name, room_number, price, status) VALUES ('$name', '$room_number', '$price', 0)");
 
         if ($insert) {
-
             header("Location: viewroom.php");
             exit;
         } else {
-            echo $mysqli->error;
+            // Handle error
+            $error = $mysqli->error;
         }
     }
+}
+// Display error message if exists
+if (isset($error)) {
+    echo $error;
 }
 
 ?>
@@ -251,7 +249,7 @@ if (isset($_POST['submit'])) {
                                                 <label>Price</label>
                                                 <input class="au-input au-input--full" type="text" name="price" placeholder="Price">
                                             </div>
-                                            <input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type="submit" name="submit" value="Submit">
+                                            <input class="au-btn au-btn--block au-btn--green m-b-20" id="submit" type="submit" name="submit" value="submit">
                                             </form>
                                         </div>
                                     </div>

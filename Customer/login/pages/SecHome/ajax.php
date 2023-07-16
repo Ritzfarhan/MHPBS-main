@@ -1,5 +1,5 @@
 <?php
-$con = mysqli_connect("localhost","root","","MHPBS");
+$con = mysqli_connect("localhost","root","654321","mhpbs");
 $name = $_GET["name"];
 $sql = "select price from rooms WHERE name = '$name' AND status = 0";
 if($name!=""){
@@ -18,5 +18,3 @@ if($name!=""){
     echo "<option>Time</option>";
     echo "</select>";
 }
-
-?>
