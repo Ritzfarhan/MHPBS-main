@@ -2,10 +2,19 @@
 session_start();
 require "database.php";
 
-if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
+/*if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
     header("index.php");
-}
+}*/
 
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    // Redirect to the specific file
+    header('Location:login.php');
+    exit;
+} else {
+    header('Location:index.php');
+    exit;
+}
 
 
 //$id = $_SESSION['id'];
