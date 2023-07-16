@@ -114,7 +114,7 @@ if (isset($error)) {
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li>
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list"></ul>
@@ -123,7 +123,7 @@ if (isset($error)) {
                             <a href="viewcust.php">
                                 <i class="far fa-check-square"></i>Customers</a>
                         </li>
-                        <li>
+                        <li class="active has-sub">
                             <a href="addroom.php">
                                 <i class="fas fa-calendar-alt"></i>Add Rooms</a>
                         </li>
