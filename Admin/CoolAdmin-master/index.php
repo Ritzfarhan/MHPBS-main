@@ -3,7 +3,7 @@ session_start();
 require "database.php";
 
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
-    header("index.php");
+    header("../index.php");
 }
 
 

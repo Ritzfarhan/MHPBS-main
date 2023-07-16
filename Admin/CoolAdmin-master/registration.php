@@ -1,4 +1,5 @@
 <?php
+
 $error = NULL;
 $notice = NULL;
 
@@ -46,7 +47,7 @@ if (isset($_POST['submit'])) {
         $error = "This Username Has Already Been Used";
     } elseif (mysqli_num_rows($checkphone) > 0) {
         $error = "This Phone Number Has Already Been Used";
-    } elseif ($hotel_id != "A19DW0589") {
+    } elseif ($hotel_id != "A19DW0589" && $hotel_id != "B22EC0033" && $hotel_id != "B22EC0030") {
         $error = "Please Contact Hotel Office for Hotel ID";
     } else {
         //Form Is Valid 
@@ -72,55 +73,15 @@ if (isset($_POST['submit'])) {
 
         //Insert account into database
         $password = md5($password);
-        $insert = $mysqli->query("INSERT into admin_users(firstname,lastname,username,password,email,phone,hotel_id,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$hotel_id','$vkey')");
-
-        if ($insert) {
-
-            //Send Email
-            $message = "<p>Please click the link below to verify your account</p>";
-            $message .= "<a href='http://3.27.90.201/MHPBS-main/Admin/CoolAdmin-master/admin_verify.php?vkey=$vkey'>";
-            $message .= "Verify Account";
-            $message .= "</a>";
-
-            send_mail($email, "MHPBS Admin Verify Email Address", $message);
-        } else {
-            echo $mysqli->error;
-        }
-    }
-}
-
-function send_mail($to, $subject, $message)
-{
-    $mail = new PHPMailer(true);
-
-    try {
-        //Server settings
-        $mail->SMTPDebug = 0;                                       // Enable verbose debug output
-        $mail->isSMTP();                                            // Set mailer to use SMTP
-        $mail->Host       = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'sposenn.dua@gmail.com';                     // SMTP username
-        $mail->Password   = 'Qazwsx123_';                               // SMTP password
-        $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-        $mail->Port       = 587;                                    // TCP port to connect to
-
-        $mail->setFrom('sposenn.dua@gmail.com', 'MHPBS');
-        //Recipients
-        $mail->addAddress($to);
-
-        // Content
-        $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = $subject;
-        $mail->Body    = $message;
-
-        $mail->send();
-
-        header("Location: admin_thankyou.php");
+        $insert = $mysqli->query("INSERT into admin_users(firstname,lastname,username,password,email,phone,hotel_id,vkey, image_admin, verified) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$hotel_id','$vkey', '',1)");
+        header("Location: ../index.php");
         exit;
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
+
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 }
+
 
 ?>
 <!DOCTYPE html>
