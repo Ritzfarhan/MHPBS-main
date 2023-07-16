@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 			$_SESSION['email'] = $email;
 			$_SESSION['username'] = $username;
 			$_SESSION['id'] = $id;
-			header('location:CoolAdmin-master');
+			header('location:index.php');
 			die;
 		} else {
 			$error = "This account has not yet been verified. An email was sent to $email on $date";

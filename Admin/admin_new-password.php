@@ -15,10 +15,13 @@ if (mysqli_num_rows($result) > 0) {
 		$sql = "UPDATE admin_users SET reset_token='', password='$new_password' WHERE email='$email'";
 		mysqli_query($connection, $sql);
 
-		echo "Password has been changed";
+		header("Location: successpassword.php");
+		exit;
 	} else {
-		echo "Recovery email has been expired";
+		header("Location: expired.php");
+		exit;
 	}
 } else {
-	echo "Email does not exists";
+	header("Location: unsuccessemail.php");
+	exit;
 }
