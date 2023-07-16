@@ -21,13 +21,14 @@ if (mysqli_num_rows($result) > 0) {
 	mysqli_query($connection, $sql);
 
 	$message = "<p>Please click the link below to reset your password</p>";
-	$message .= "<a href='http://localhost/MHPBS/Admin/admin_reset-password.php?email=$email&reset_token=$reset_token'>";
+	$message .= "<a href='http://localhost/MHPBS/Admin/CoolAdmin-master/admin_reset-password.php?email=$email&reset_token=$reset_token'>";
 	$message .= "Reset password";
 	$message .= "</a>";
 
 	send_mail($email, "MHPBS Admin Reset Password", $message);
 } else {
-	echo "Email does not exists";
+	header("Location: unsuccessemail.php");
+	exit;
 }
 
 function send_mail($to, $subject, $message)
@@ -55,7 +56,8 @@ function send_mail($to, $subject, $message)
 		$mail->Body    = $message;
 
 		$mail->send();
-		echo 'Reset password link has been sent to your email. Check your spam folder if needed';
+		header("Location: successemail.php");
+		exit;
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 	}
